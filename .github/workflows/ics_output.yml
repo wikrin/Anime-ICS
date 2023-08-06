@@ -1,0 +1,40 @@
+name: build ICS file
+
+on:
+  push:
+  schedule:
+    - cron: '30 22 * * *'
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  # a single job
+  build-ics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Python3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install requirements
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ./requirements.txt
+      - name: Run
+        run: python3 ./bangumi.py
+      - name: Commit and Push
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.PRAT_TOKEN }}
+          repository-name: wikrin/ICS-outPath
+          branch: main
+          folder: ./ics
+          commit-message: |
+            SHA: ${{ github.sha }}.
+            Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
