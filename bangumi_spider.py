@@ -1,0 +1,84 @@
+import requests
+import json
+import re
+from bs4 import BeautifulSoup
+from datetime import *
+import time
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188'
+}
+
+
+def geturlist(uid:str):
+    url_list = []
+    name_idDict = {}
+    listHomePage = requests.get(f"https://bangumi.tv/anime/list/{uid}/do",headers=headers)
+    listHomePageSoup = BeautifulSoup(listHomePage.content,"html.parser")
+    fanh = listHomePageSoup.find_all("h3")
+    for fana in fanh:
+        fan = fana.find('a')
+        url_list.append(re.sub(r'\D',"", fan.get("href")))
+        name_idDict[re.sub(r'\D',"", fan.get("href"))] = fan.string
+    return url_list,name_idDict
+
+
+def bgmdata(id:str):
+    bgmApiData = requests.get(f"https://api.bgm.tv/v0/episodes?subject_id={id}&type=0",headers=headers)
+    bgmapiJS = bgmApiData.json()
+    bgmDict = {id: [{'ep': str(apidata['ep']), 'id': apidata['subject_id'], 'epid': apidata['id'], 'airdate': apidata['airdate'],'duration': apidata['duration']} for apidata in bgmapiJS['data']]}
+    return bgmDict
+
+def bangumidata(idlist:list):
+    bangumiData = requests.get("https://unpkg.com/bangumi-data@0.3/dist/data.json",headers=headers)
+    bgmdataJS = bangumiData.json()
+    time_idDict = {sites['id']:items['begin'][11:19] for items in bgmdataJS['items'] for sites in items['sites'] if sites['site'] == "bangumi" and sites['id'] in idlist}
+    return time_idDict
+
+def enddata(bgmDict:dict, name_idDict:dict, time_idDict:dict, id:str):
+    icslist = []
+    ep_name = name_idDict.get(id, "获取失败!")
+    temptime = time_idDict.get(id, "21:00:00")
+    for eplist in bgmDict[id]:
+        op_time = eplist['airdate'] + " " + temptime
+        if eplist['duration'] == '':
+            play_time = "00:24:00"
+        else:
+            play_time = eplist['duration']
+        dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
+        playtime = datetime.strptime(play_time, "%H:%M:%S")
+        dtstamp = dtstart + timedelta(hours=playtime.hour, minutes=playtime.minute, seconds=playtime.second)
+        icslist.append({'summary': "[ep." + eplist['ep'] + "] " + ep_name, 'id':eplist['id'], 'epid':eplist['epid'], 'dtstart': dtstart.strftime("%Y%m%dT%H%M%SZ"), 'dtstamp': dtstamp.strftime("%Y%m%dT%H%M%SZ")})
+    return icslist
+
+def ics_header():
+    return "BEGIN:VCALENDAR\n" \
+           + "PRODID:NULL\n" \
+           + "VERSION:2.0\n" \
+           + "CALSCALE:GREGORIAN\n" \
+           + "METHOD:PUBLISH\n" \
+           + "X-WR-CALNAME:番剧放送\n" \
+           + "X-WR-TIMEZONE:Asia/Shanghai\n" \
+           + "BEGIN:VTIMEZONE\n" \
+           + "TZID:Asia/Shanghai\n" \
+           + "X-LIC-LOCATION:Asia/Shanghai\n" \
+           + "BEGIN:STANDARD\n" \
+           + "TZOFFSETFROM:+0800\n" \
+           + "TZOFFSETTO:+0800\n" \
+           + "TZNAME:CST\n" \
+           + "DTSTART:19700101T000000\n" \
+           + "END:STANDARD\n" \
+           + "END:VTIMEZONE\n"
+
+def body_ics(icsDict:dict):
+    return "BEGIN:VEVENT\n" \
+           + f"DTSTART:{icsDict['dtstart']}\n" \
+           + f"DTEND:{icsDict['dtstamp']}\n" \
+           + f"UID:{icsDict['id']}-{icsDict['epid']}\n" \
+           + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n" \
+           + f"SUMMARY:{icsDict['summary']}\n" \
+           + "TRANSP:OPAQUE\n" \
+           + "END:VEVENT\n"
+
+def save_ics(file, str, mode = 'w'):
+    with open(f'./ics/{file}.ics', mode, encoding='utf-8') as ics:
+        ics.write(str)
