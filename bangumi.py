@@ -1,12 +1,10 @@
-#encoding:utf-8
+# encoding:utf-8
 import bangumi_spider
 import concurrent.futures
 
 if __name__ == "__main__":
-
-    url_list,name_idDict = bangumi_spider.geturlist("488804")
+    url_list, name_idDict = bangumi_spider.geturlist("488804")
     # time_idDict = bangumi_spider.bangumidata(url_list)
-
 
     with concurrent.futures.ThreadPoolExecutor() as bgmapi:
         futuresDict = {}
@@ -15,7 +13,7 @@ if __name__ == "__main__":
         for url in url_list:
             futures = bgmapi.submit(bangumi_spider.bgmdata, url)
             futuresDict[futures] = url
-        
+
         bgmDict = {}
         for future in concurrent.futures.as_completed(futuresDict):
             if futuresDict[future] == 'bangumidata':
@@ -33,11 +31,10 @@ if __name__ == "__main__":
     for icsdata in icslist:
         ics += bangumi_spider.body_ics(icsdata)
     # 最后写出数据至文件
-    bangumi_spider.save_ics('bangumi',ics)
+    bangumi_spider.save_ics('bangumi', ics)
 
     # with concurrent.futures.ThreadPoolExecutor() as body_ics:
     #     bangumi_spider.save_ics(bangumi_spider.ics_header())
     #     icsstr = body_ics.map(bangumi_spider.body_ics, icslist)
     #     for ics in icsstr:
     #         bangumi_spider.save_ics(ics, 'a+')
-    
