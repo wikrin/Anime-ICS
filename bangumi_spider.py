@@ -71,7 +71,6 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
             play_time = '1440'
         else:
             play_time = eplist['duration_seconds']
-        print(id, op_time)
         dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
         dtstamp = dtstart + timedelta(seconds=int(play_time))
         icslist.append(
