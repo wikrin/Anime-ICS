@@ -62,17 +62,17 @@ def bangumidata(idlist: list):
 def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
     icslist = []
     ep_name = name_idDict.get(id, "获取失败!")
-    temptime = time_idDict.get(id, "21:00:00")
+    temptime = time_idDict.get(id, "15:00:00")
     for eplist in bgmDict[id]:
         if eplist['airdate'] == '':
             continue
         op_time = eplist['airdate'] + " " + temptime
-        if eplist['duration_seconds'] == '':
-            play_time = '1440'
+        if eplist['duration_seconds'] == 0:
+            play_time = 1440
         else:
             play_time = eplist['duration_seconds']
         dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
-        dtstamp = dtstart + timedelta(seconds=int(play_time))
+        dtstamp = dtstart + timedelta(seconds=play_time)
         icslist.append(
             {
                 'summary': "[ep." + eplist['ep'] + "] " + ep_name,

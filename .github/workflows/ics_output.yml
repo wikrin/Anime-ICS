@@ -3,7 +3,7 @@ name: build ICS file
 on:
   push:
   schedule:
-    - cron: '30 22 * * *'
+    - cron: '30 15 * * *'
 
 env:
   TZ: Asia/Shanghai
