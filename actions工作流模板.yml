@@ -26,7 +26,6 @@ jobs:
           python-version: '3.x'
       - name: Install requirements
         run: |
-          ls
           python3 -m pip install --upgrade pip
           pip3 install -r ./requirements.txt
       - name: add ENV and Run
