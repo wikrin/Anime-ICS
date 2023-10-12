@@ -1,9 +1,11 @@
-# encoding:utf-8
-import bangumi_spider
+import os
 import concurrent.futures
+import bangumi_spider
+
 
 if __name__ == "__main__":
-    url_list, name_idDict = bangumi_spider.geturlist("488804")
+    UID = os.getenv('BGM_UID')
+    url_list, name_idDict = bangumi_spider.geturlist(UID)
     # time_idDict = bangumi_spider.bangumidata(url_list)
 
     with concurrent.futures.ThreadPoolExecutor() as bgmapi:

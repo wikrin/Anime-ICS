@@ -4,9 +4,7 @@ import re
 from bs4 import BeautifulSoup
 from datetime import *
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188'
-}
+headers = {'User-Agent': 'wikrin/Anime-ICS (https://github.com/wikrin/Anime-ICS)'}
 
 
 def geturlist(uid: str):
@@ -45,9 +43,7 @@ def bgmdata(id: str):
 
 
 def bangumidata(idlist: list):
-    bangumiData = requests.get(
-        "https://unpkg.com/bangumi-data@0.3/dist/data.json", headers=headers
-    )
+    bangumiData = requests.get("https://unpkg.com/bangumi-data@0.3/dist/data.json")
     bgmdataJS = bangumiData.json()
     time_idDict = {
         sites['id']: items['begin'][11:19]
@@ -55,6 +51,7 @@ def bangumidata(idlist: list):
         for sites in items['sites']
         if sites['site'] == "bangumi" and sites['id'] in idlist
     }
+    bangumiData.status_code
     return time_idDict
 
 
