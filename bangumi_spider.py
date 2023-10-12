@@ -116,7 +116,7 @@ def body_ics(icsDict: dict):
         + "TRANSP:OPAQUE\n"
         + "SEQUENCE:0\n"
         + f"DTEND:{icsDict['dtstamp']}\n"
-        + f"LAST-MODIFIED:{datetime.strftime(datetime.now, '%Y%m%dT%H%M%SZ')}\n"
+        + f"LAST-MODIFIED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
         + "END:VEVENT\n"
     )
 
