@@ -7,17 +7,19 @@ on:
 
 env:
   TZ: Asia/Shanghai
-
+  
+permissions:
+  contents: write
+  
 jobs:
   # a single job
   build-ics:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false
-          fetch-depth: 0
+          repository: wikrin/Anime-ICS
       - name: Set up Python3
         uses: actions/setup-python@v4
         with:
@@ -26,15 +28,18 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install -r ./requirements.txt
-      - name: Run
+      - name: add ENV and Run
+        env:
+          BGM_UID: ${{ secrets.BGM_UID }}
         run: python3 ./bangumi.py
       - name: Commit and Push
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          token: ${{ secrets.PRAT_TOKEN }}
-          repository-name: wikrin/ICS-outPath
+          repository-name: 你的github用户名/仓库名
           branch: main
-          folder: ./ics
+          folder: ics
+          clean: true
+          clean-exclude: ics/bangumi.ics
           commit-message: |
             SHA: ${{ github.sha }}.
             Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

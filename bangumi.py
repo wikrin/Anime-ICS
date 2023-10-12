@@ -28,7 +28,7 @@ if __name__ == "__main__":
     for i in url_list:
         icslist += bangumi_spider.enddata(bgmDict, name_idDict, time_idDict, i)
 
-    # 好了，生成日程所需的数据都在icslist列表里了，for遍历icslist获得dict对象
+    # 生成日程所需的数据都在icslist列表里了，for遍历icslist获得dict对象
     ics = bangumi_spider.ics_header()
     for icsdata in icslist:
         ics += bangumi_spider.body_ics(icsdata)
