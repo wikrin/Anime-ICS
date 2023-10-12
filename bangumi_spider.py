@@ -3,7 +3,6 @@ import json
 import re
 from bs4 import BeautifulSoup
 from datetime import *
-import time
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188'
@@ -111,11 +110,13 @@ def body_ics(icsDict: dict):
     return (
         "BEGIN:VEVENT\n"
         + f"DTSTART:{icsDict['dtstart']}\n"
-        + f"DTEND:{icsDict['dtstamp']}\n"
+        + f"SUMMARY:{icsDict['summary']}\n"
         + f"UID:{icsDict['id']}-{icsDict['epid']}\n"
         + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n"
-        + f"SUMMARY:{icsDict['summary']}\n"
         + "TRANSP:OPAQUE\n"
+        + "SEQUENCE:0\n"
+        + f"DTEND:{icsDict['dtstamp']}\n"
+        + f"LAST-MODIFIED:{datetime.strftime(datetime.now, "%Y%m%dT%H%M%SZ")}\n"
         + "END:VEVENT\n"
     )
 
