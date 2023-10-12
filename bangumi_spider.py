@@ -87,7 +87,7 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
 def ics_header():
     return (
         "BEGIN:VCALENDAR\n"
-        + "PRODID:NULL\n"
+        + "PRODID:-//Anime broadcast time Calendar//CN\n"
         + "VERSION:2.0\n"
         + "CALSCALE:GREGORIAN\n"
         + "METHOD:PUBLISH\n"
@@ -110,12 +110,12 @@ def body_ics(icsDict: dict):
     return (
         "BEGIN:VEVENT\n"
         + f"DTSTART:{icsDict['dtstart']}\n"
-        + f"SUMMARY:{icsDict['summary']}\n"
+        + f"DTEND:{icsDict['dtstamp']}\n"
         + f"UID:{icsDict['id']}-{icsDict['epid']}\n"
+        + f"SUMMARY:{icsDict['summary']}\n"
         + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n"
         + "TRANSP:OPAQUE\n"
         + "SEQUENCE:0\n"
-        + f"DTEND:{icsDict['dtstamp']}\n"
         + f"LAST-MODIFIED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
         + "END:VEVENT\n"
     )
