@@ -90,6 +90,7 @@ def ics_header():
         + "METHOD:PUBLISH\n"
         + "X-WR-CALNAME:番剧放送\n"
         + "X-WR-TIMEZONE:Asia/Shanghai\n"
+        + "X-PUBLISHED-TTL:PT1H\n"
         + "BEGIN:VTIMEZONE\n"
         + "TZID:Asia/Shanghai\n"
         + "X-LIC-LOCATION:Asia/Shanghai\n"
@@ -106,8 +107,8 @@ def ics_header():
 def body_ics(icsDict: dict):
     return (
         "BEGIN:VEVENT\n"
-        + f"DTSTART:{icsDict['dtstart']}\n"
-        + f"DTEND:{icsDict['dtstamp']}\n"
+        + f"DTSTART;VALUE=DATE-TIME:{icsDict['dtstart']}\n"
+        + f"DTEND;VALUE=DATE-TIME:{icsDict['dtstamp']}\n"
         + f"DTSTAMP:{icsDict['dtstart']}\n"
         + f"UID:{icsDict['id']}-{icsDict['epid']}\n"
         + f"CREATED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
