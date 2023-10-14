@@ -43,7 +43,7 @@ def bgmdata(id: str):
 
 
 def bangumidata(idlist: list):
-    bangumiData = requests.get("https://unpkg.com/bangumi-data@0.3/dist/data.json")
+    bangumiData = requests.get("https://unpkg.com/bangumi-data@latest/dist/data.json")
     bgmdataJS = bangumiData.json()
     time_idDict = {
         sites['id']: items['begin'][11:19]
