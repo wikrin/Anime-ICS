@@ -90,7 +90,6 @@ def ics_header():
         + "METHOD:PUBLISH\n"
         + "X-WR-CALNAME:番剧放送\n"
         + "X-WR-TIMEZONE:Asia/Shanghai\n"
-        + "X-PUBLISHED-TTL:PT1H\n"
         + "BEGIN:VTIMEZONE\n"
         + "TZID:Asia/Shanghai\n"
         + "X-LIC-LOCATION:Asia/Shanghai\n"
@@ -116,6 +115,7 @@ def body_ics(icsDict: dict):
         + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n"
         + "TRANSP:OPAQUE\n"
         + "SEQUENCE:0\n"
+        + "STATUS:CONFIRMED\n"
         + f"LAST-MODIFIED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
         + "END:VEVENT\n"
     )
