@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import *
 
 headers = {'User-Agent': 'wikrin/Anime-ICS (https://github.com/wikrin/Anime-ICS)'}
+time_now = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
 
 
 def geturlist(uid: str):
@@ -30,8 +31,9 @@ def bgmdata(id: str):
     bgmDict = {
         id: [
             {
-                'ep': str(apidata['ep']),
-                'id': apidata['subject_id'],
+                'sort': str(apidata['sort']),
+                'ep': apidata['ep'],
+                'subject_id': apidata['subject_id'],
                 'epid': apidata['id'],
                 'airdate': apidata['airdate'],
                 'duration_seconds': apidata['duration_seconds'],
@@ -71,8 +73,10 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
         dtstamp = dtstart + timedelta(seconds=play_time)
         icslist.append(
             {
-                'summary': "[ep." + eplist['ep'] + "] " + ep_name,
-                'id': eplist['id'],
+                'summary': "[ep." + eplist['sort'] + "] " + ep_name,
+                'uid': "{}-{}-{}".format(
+                    eplist['subject_id'], eplist['ep'] - 1, eplist['epid']
+                ),
                 'epid': eplist['epid'],
                 'dtstart': dtstart.strftime("%Y%m%dT%H%M%SZ"),
                 'dtstamp': dtstamp.strftime("%Y%m%dT%H%M%SZ"),
@@ -109,14 +113,14 @@ def body_ics(icsDict: dict):
         + f"DTSTART;VALUE=DATE-TIME:{icsDict['dtstart']}\n"
         + f"DTEND;VALUE=DATE-TIME:{icsDict['dtstamp']}\n"
         + f"DTSTAMP:{icsDict['dtstart']}\n"
-        + f"UID:{icsDict['id']}-{icsDict['epid']}\n"
-        + f"CREATED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
+        + f"UID:{icsDict['uid']}\n"
+        + f"CREATED:{time_now}\n"
         + f"SUMMARY:{icsDict['summary']}\n"
         + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n"
         + "TRANSP:OPAQUE\n"
-        + "SEQUENCE:0\n"
+        + f"SEQUENCE:0\n"
         + "STATUS:CONFIRMED\n"
-        + f"LAST-MODIFIED:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
+        + f"LAST-MODIFIED:{time_now}\n"
         + "END:VEVENT\n"
     )
 
