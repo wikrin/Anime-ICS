@@ -88,7 +88,7 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
 def ics_header():
     return (
         "BEGIN:VCALENDAR\n"
-        + "PRODID:-//Anime broadcast time Calendar//CN\n"
+        + "PRODID:-//Anime wikrin.//Anime broadcast time Calendar 2.0//CN\n"
         + "VERSION:2.0\n"
         + "CALSCALE:GREGORIAN\n"
         + "METHOD:PUBLISH\n"
