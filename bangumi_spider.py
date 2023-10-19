@@ -92,7 +92,7 @@ def ics_header():
         + "VERSION:2.0\n"
         + "CALSCALE:GREGORIAN\n"
         + "METHOD:PUBLISH\n"
-        + "X-WR-CALNAME:a番剧放送\n"
+        + "X-WR-CALNAME:番剧放送\n"
         + "X-WR-TIMEZONE:Asia/Shanghai\n"
         + "BEGIN:VTIMEZONE\n"
         + "TZID:Asia/Shanghai\n"
