@@ -32,7 +32,7 @@ if __name__ == "__main__":
     ics = bangumi_spider.ics_header()
     for icsdata in icslist:
         ics += bangumi_spider.body_ics(icsdata)
-        ics += "END:VCALENDAR"
+    ics += "END:VCALENDAR"
     # 最后写出数据至文件
     bangumi_spider.save_ics('bangumi', ics)
 
