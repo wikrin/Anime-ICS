@@ -31,12 +31,13 @@ def bgmdata(id: str):
     bgmDict = {
         id: [
             {
-                'sort': str(apidata['sort']),
+                'sort': apidata['sort'],
                 'ep': apidata['ep'],
                 'subject_id': apidata['subject_id'],
                 'epid': apidata['id'],
                 'airdate': apidata['airdate'],
                 'duration_seconds': apidata['duration_seconds'],
+                'total': bgmapiJS['total'],
             }
             for apidata in bgmapiJS['data']
         ]
@@ -71,11 +72,12 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
             play_time = eplist['duration_seconds']
         dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
         dtstamp = dtstart + timedelta(seconds=play_time)
+        ep_total = ep_tot(sort=eplist['sort'], ep=eplist['ep'], total=eplist['total'])
         icslist.append(
             {
-                'summary': "[ep." + eplist['sort'] + "] " + ep_name,
+                'summary': f"[{eplist['sort']}/{ep_total[0]}] " + ep_name,
                 'uid': "{}-{}-{}".format(
-                    eplist['subject_id'], eplist['ep'] - 1, eplist['epid']
+                    eplist['subject_id'], eplist['epid'], ep_total[1]
                 ),
                 'epid': eplist['epid'],
                 'dtstart': dtstart.strftime("%Y%m%dT%H%M%SZ"),
@@ -128,3 +130,10 @@ def body_ics(icsDict: dict):
 def save_ics(file, str, mode='w'):
     with open(f'./ics/{file}.ics', mode, encoding='utf-8') as ics:
         ics.write(str)
+
+
+def ep_tot(sort: int, ep: int, total: int) -> tuple:
+    Total_episodes: int = sort - ep + total
+    eps: int = total - ep
+    type: int = 0 if eps != 0 else 1
+    return (Total_episodes, type)
