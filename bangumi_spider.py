@@ -135,5 +135,5 @@ def save_ics(file, str, mode='w'):
 def ep_tot(sort: int, ep: int, total: int) -> tuple:
     Total_episodes: int = sort - ep + total
     eps: int = total - ep
-    type: int = 0 if eps != 0 else 1
+    type: int = 0 if eps != 0 else 3
     return (Total_episodes, type)
