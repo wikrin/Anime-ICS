@@ -76,8 +76,8 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
         icslist.append(
             {
                 'summary': f"[{eplist['sort']}/{ep_total[0]}] " + ep_name,
-                'uid': "{}-{}-{}".format(
-                    eplist['subject_id'], eplist['epid'], ep_total[1]
+                'uid': "{}-{}-{}-{}".format(
+                    eplist['subject_id'], eplist['ep'], eplist['epid'], ep_total[1]
                 ),
                 'epid': eplist['epid'],
                 'dtstart': dtstart.strftime("%Y%m%dT%H%M%SZ"),

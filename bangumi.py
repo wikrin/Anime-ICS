@@ -1,8 +1,9 @@
 import os
+from dotenv import load_dotenv
 import concurrent.futures
 import bangumi_spider
 
-
+load_dotenv()
 if __name__ == "__main__":
     UID = os.getenv('BGM_UID')
     url_list, name_idDict = bangumi_spider.geturlist(UID)
