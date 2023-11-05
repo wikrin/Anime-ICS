@@ -30,14 +30,16 @@ jobs:
         env:
           BGM_UID: ${{ secrets.BGM_UID }}
         run: python3 ./bangumi.py
-      - name: Commit files
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          git commit -a -m "SHA: ${{ github.sha }}.
-          Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Commit and Push
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          force_with_lease: true
+          repository-name: ${{ github.repository }}
+          branch: main
+          folder: ics
+          clean: false
+          clean-exclude: .
+          commit-message: |
+            SHA: ${{ github.sha }}.
+            Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          git-config-name: github-actions[bot]
+          git-config-email: github-actions[bot]@users.noreply.github.com
