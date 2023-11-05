@@ -1,8 +1,8 @@
 import requests
-import json
 import re
 from bs4 import BeautifulSoup
 from datetime import *
+from selection import sel_begin
 
 headers = {'User-Agent': 'wikrin/Anime-ICS (https://github.com/wikrin/Anime-ICS)'}
 time_now = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
@@ -48,20 +48,27 @@ def bgmdata(id: str):
 def bangumidata(idlist: list):
     bangumiData = requests.get("https://unpkg.com/bangumi-data@latest/dist/data.json")
     bgmdataJS = bangumiData.json()
-    time_idDict = {
-        sites['id']: items['begin'][11:19]
+    id_sites = {
+        sites['id']: (
+            items['begin'][11:19],
+            {
+                sites['site']: sites['begin'][11:19]
+                for sites in items['sites']
+                if 'begin' in sites and sites['begin']
+            },
+        )
         for items in bgmdataJS['items']
         for sites in items['sites']
         if sites['site'] == "bangumi" and sites['id'] in idlist
     }
-    bangumiData.status_code
+    time_idDict = sel_begin(id_sites)
     return time_idDict
 
 
 def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
     icslist = []
     ep_name = name_idDict.get(id, "获取失败!")
-    temptime = time_idDict.get(id, "15:00:00")
+    temptime = time_idDict.get(id, "15:11:11")
     for eplist in bgmDict[id]:
         if eplist['airdate'] == '':
             continue
