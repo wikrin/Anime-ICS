@@ -36,8 +36,8 @@ jobs:
           repository-name: ${{ github.repository }}
           branch: main
           folder: ics
+          target-folder: ics
           clean: false
-          clean-exclude: .
           commit-message: |
             SHA: ${{ github.sha }}.
             Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
