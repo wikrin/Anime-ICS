@@ -1,7 +1,6 @@
 name: build ICS file
 
 on:
-  push:
   schedule:
     - cron: '30 15 * * *'
 
