@@ -39,3 +39,5 @@ jobs:
           Run in https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
       - name: Push changes
         uses: ad-m/github-push-action@master
+        with:
+          force_with_lease: true
