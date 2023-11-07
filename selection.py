@@ -27,7 +27,7 @@ nowPlayer           Now Player
 dmhy                动漫花园
 '''
 
-sel = ['ani_one', 'gamer', 'dmhy', 'netflix', 'muse_hk']
+sel = ['ani_one', 'netflix']
 
 
 # def timeit(func):
