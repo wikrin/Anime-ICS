@@ -27,7 +27,7 @@ nowPlayer           Now Player
 dmhy                动漫花园
 '''
 
-sel = ['ani_one', 'netflix']
+sel = ['ani_one', 'bilibili_hk_mo_tw', 'gamer', 'netflix']
 
 
 # def timeit(func):
@@ -43,18 +43,17 @@ sel = ['ani_one', 'netflix']
 
 def sel_begin(bgm_data: dict[str, tuple[str, dict]]) -> dict:
     id_begin: dict = {id: jptv[0] for (id, jptv) in bgm_data.items()}
-    # for id, begin in bgm_data.items():
-    #     for meta in sel:
-    #         if meta in begin[-1]:
-    #             id_begin[id] = begin[-1][meta]
-    #         else:
-    #             continue
-    id_begin.update(
-        {
-            id: begin[-1][meta]
-            for id, begin in bgm_data.items()
-            for meta in sel
-            if meta in begin[-1]
-        }
-    )
+    for id, begin in bgm_data.items():
+        for meta in sel:
+            if meta in begin[-1]:
+                id_begin[id] = begin[-1][meta]
+                break
+    # id_begin.update(
+    #     {
+    #         id: begin[-1][meta]
+    #         for id, begin in bgm_data.items()
+    #         for meta in sel
+    #         if meta in begin[-1]
+    #     }
+    # )
     return id_begin
