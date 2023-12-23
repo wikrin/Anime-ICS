@@ -77,7 +77,11 @@ def enddata(bgmDict: dict, name_idDict: dict, time_idDict: dict, id: str):
             play_time = 1440
         else:
             play_time = eplist['duration_seconds']
-        dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
+        if len(op_time) == 19:
+            dtstart = datetime.strptime(op_time, "%Y-%m-%d %H:%M:%S")
+        else:
+            dtstart = errdate + timedelta(days=7)
+        errdate = dtstart
         dtstamp = dtstart + timedelta(seconds=play_time)
         ep_total = ep_tot(sort=eplist['sort'], ep=eplist['ep'], total=eplist['total'])
         icslist.append(
