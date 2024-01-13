@@ -125,15 +125,15 @@ def body_ics(icsDict: dict):
         "BEGIN:VEVENT\n"
         + f"DTSTART;VALUE=DATE-TIME:{icsDict['dtstart']}\n"
         + f"DTEND;VALUE=DATE-TIME:{icsDict['dtstamp']}\n"
-       # + f"DTSTAMP:{icsDict['dtstart']}\n"
+        + f"DTSTAMP:{icsDict['dtstart']}\n"
         + f"UID:{icsDict['uid']}\n"
-       # + f"CREATED:{time_now}\n"
+        + f"CREATED:{time_now}\n"
         + f"SUMMARY:{icsDict['summary']}\n"
         + f"DESCRIPTION:https://bgm.tv/ep/{icsDict['epid']}\n"
         + "TRANSP:OPAQUE\n"
         + f"SEQUENCE:0\n"
         + "STATUS:CONFIRMED\n"
-       # + f"LAST-MODIFIED:{time_now}\n"
+        + f"LAST-MODIFIED:{time_now}\n"
         + "END:VEVENT\n"
     )
 
